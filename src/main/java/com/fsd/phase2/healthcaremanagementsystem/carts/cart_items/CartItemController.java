@@ -1,0 +1,38 @@
+package com.fsd.phase2.healthcaremanagementsystem.carts.cart_items;
+
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@AllArgsConstructor
+public class CartItemController {
+
+    private final CartItemService cartItemService;
+
+    @GetMapping("/carts/{id}/items")
+    public List<CartItemDTO> findCartItemsByCartId(@PathVariable("id") Long cartId) {
+        return cartItemService.findCartItemsByCartId(cartId);
+    }
+
+    @GetMapping(value = "/carts/{id}/items", params = {"medicineid"})
+    public CartItemDTO getCartItemByCartIdAndMedicineId(@PathVariable("id") Long cartId, @RequestParam("medicineid") Long medicineId) {
+        return cartItemService.getCartItemByCartIdAndMedicineId(cartId, medicineId);
+    }
+
+    @PutMapping(value = "/carts/{cartid}/items", params = {"medicineid", "quantity"})
+    public CartItemDTO updateCartItem(@PathVariable("cartid") Long cartId, @RequestParam("medicineid") Long medicineId, @RequestParam("quantity") Integer quantity) {
+       return cartItemService.updateCartItem(cartId, medicineId, quantity);
+    }
+
+    @DeleteMapping(value = "/carts/{id}/items", params = {"medicineid"})
+    public void deleteMedicineFromCart(@PathVariable("id") Long cartId, @RequestParam("medicineid") Long medicineId) {
+        cartItemService.deleteCartItemByCartIdAndMedicineId(cartId, medicineId);
+    }
+}
