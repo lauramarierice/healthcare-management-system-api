@@ -36,8 +36,8 @@ public class MedicineController {
 
     @PostMapping(value = "/admin/medicine")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public MedicineDTO addMedicine(@RequestBody MedicineEntity medicineEntity) {
-        return medicineService.addMedicine(medicineEntity);
+    public MedicineDTO addMedicine(@RequestBody MedicineDTO medicineDTO) {
+        return medicineService.addMedicine(medicineDTO);
     }
 
     @PutMapping(value = "/admin/medicine/{id}")

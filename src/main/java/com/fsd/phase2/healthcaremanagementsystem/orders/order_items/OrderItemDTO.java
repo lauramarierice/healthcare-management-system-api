@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,10 +18,6 @@ public class OrderItemDTO {
     private Long id;
 
     private Integer quantity;
-
-    private Double price;
-
-    private Date createdDate;
 
     private Long medicineId;
 

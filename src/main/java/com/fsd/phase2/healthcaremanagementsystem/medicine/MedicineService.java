@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -32,8 +31,8 @@ public class MedicineService {
         return medicineMapper.map(medicineRepository.findByTreatableDiseases(treatableDisease));
     }
 
-    public MedicineDTO addMedicine(@RequestBody MedicineEntity medicineEntity) {
-        return medicineMapper.map(medicineRepository.save(medicineEntity));
+    public MedicineDTO addMedicine(@RequestBody MedicineDTO medicineDTO) {
+        return medicineMapper.map(medicineRepository.save(medicineMapper.map(medicineDTO)));
     }
 
     public MedicineDTO updateMedicine(@RequestBody MedicineDTO medicineDTO, Long id) {
@@ -49,6 +48,10 @@ public class MedicineService {
 
     @Transactional
     public void deleteMedicine(Long id) {
-        medicineRepository.deleteById(id);
+        try {
+            medicineRepository.deleteById(id);
+        } catch(Exception e) {
+            throw new EntityNotFoundException();
+        }
     }
 }

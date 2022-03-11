@@ -9,11 +9,14 @@ import java.util.List;
 public interface OrderMapper {
 
     @Mapping(target = "orderId", source = "orderId")
+    @Mapping(target = "orderDate", source = "orderDate")
     @Mapping(target = "userId", source = "userId")
     @Mapping(target = "orderStatus", source = "orderStatus")
     OrderDTO map(OrderEntity source);
 
-    OrderEntity map(OrderDTO source);
+    OrderEntity mapEntity(OrderDTO source);
 
-    List<OrderDTO> map(List<OrderEntity> source);
+    List<OrderDTO> mapList(List<OrderEntity> source);
+
+    List<OrderDTO> mapProjectionList(List<OrderProjection> source);
 }

@@ -1,6 +1,5 @@
 package com.fsd.phase2.healthcaremanagementsystem.orders.order_items;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Entity
 @Table(name = "ORDER_ITEMS")
@@ -34,12 +32,6 @@ public class OrderItemEntity {
 
     @Column(name = "QUANTITY")
     private Integer quantity;
-
-    @Column(name = "PRICE")
-    private Double price;
-
-    @Column(name = "CREATED_DATE")
-    private Date createdDate;
 
     @Column(name = "MEDICINE_ID")
     private Long medicineId;

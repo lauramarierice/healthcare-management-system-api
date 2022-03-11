@@ -4,13 +4,14 @@ import com.fsd.phase2.healthcaremanagementsystem.carts.CartDTO;
 import com.fsd.phase2.healthcaremanagementsystem.carts.CartService;
 import com.fsd.phase2.healthcaremanagementsystem.carts.cart_items.CartItemDTO;
 import com.fsd.phase2.healthcaremanagementsystem.exceptions.EntityNotFoundException;
+import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemDTO;
 import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemEntity;
+import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemService;
 import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemsRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -23,17 +24,26 @@ public class OrderService {
 
     private final CartService cartService;
 
+    private final OrderItemService orderItemService;
+
     private final OrderItemsRepository orderItemsRepository;
 
-    public OrderDTO getOrderStatusById(Long id) {
-        return orderMapper.map(orderRepository.findById(id)
-                .orElseThrow(() -> {
-                    throw new EntityNotFoundException("Order not found.");
-                }));
+    public List<OrderDTO> getOrderReports() {
+        return orderMapper.mapProjectionList(orderRepository.findAllOrders());
+    }
+
+    public OrderDTO getOrderStatusByOrderId(Long orderId) {
+        OrderDTO orderDTO = orderMapper.map(orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new));
+
+        List<OrderItemDTO> orderItems = orderItemService.findOrderItemsByOrderId(orderId);
+        orderDTO.setOrderItems(orderItems);
+
+        return orderDTO;
     }
 
     public List<OrderDTO> findOrdersByUserId(Long userId) {
-        return orderMapper.map(orderRepository.findByUserId(userId));
+        return orderMapper.mapList(orderRepository.findByUserId(userId));
     }
 
     public OrderDTO placeNewOrder(Long userId) {
@@ -43,12 +53,11 @@ public class OrderService {
 
         OrderEntity newOrderEntity = new OrderEntity();
         newOrderEntity.setUserId(userId);
-        newOrderEntity.setCreatedDate(Date.from(Instant.now()));
+        newOrderEntity.setOrderDate(ZonedDateTime.now());
         orderRepository.save(newOrderEntity);
 
-        cartItems.stream().forEach(cartItemDTO -> {
+        cartItems.forEach(cartItemDTO -> {
             OrderItemEntity orderItemEntity = new OrderItemEntity();
-            orderItemEntity.setCreatedDate(Date.from(Instant.now()));
             orderItemEntity.setMedicineId(cartItemDTO.getMedicineId());
             orderItemEntity.setQuantity(cartItemDTO.getQuantity());
             orderItemEntity.setOrderId(newOrderEntity.getOrderId());

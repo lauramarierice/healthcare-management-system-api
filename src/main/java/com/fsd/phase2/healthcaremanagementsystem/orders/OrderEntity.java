@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "ORDERS")
@@ -37,6 +37,6 @@ public class OrderEntity {
     @Column(name = "ORDER_STATUS")
     private String orderStatus;
 
-    @Column(name = "CREATED_DATE")
-    private Date createdDate;
+    @Column(name = "ORDER_DATE")
+    private ZonedDateTime orderDate;
 }

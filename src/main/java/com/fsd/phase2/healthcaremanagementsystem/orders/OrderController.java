@@ -1,6 +1,7 @@
 package com.fsd.phase2.healthcaremanagementsystem.orders;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +15,15 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    @GetMapping(value = "/reports/orders")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<OrderDTO> getOrderReports() {
+        return orderService.getOrderReports();
+    }
+
     @GetMapping(value = "/orders/{id}/statuses")
     public OrderDTO getOrderStatusByOrderId(@PathVariable("id") Long id) {
-        return orderService.getOrderStatusById(id);
+        return orderService.getOrderStatusByOrderId(id);
     }
 
     @GetMapping(value = "/users/{id}/orders")
