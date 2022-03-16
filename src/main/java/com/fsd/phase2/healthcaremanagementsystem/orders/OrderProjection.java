@@ -1,6 +1,6 @@
 package com.fsd.phase2.healthcaremanagementsystem.orders;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 public interface OrderProjection {
 
@@ -10,5 +10,5 @@ public interface OrderProjection {
 
     Long getUserId();
 
-    ZonedDateTime getOrderDate();
+    LocalDate getOrderDate();
 }

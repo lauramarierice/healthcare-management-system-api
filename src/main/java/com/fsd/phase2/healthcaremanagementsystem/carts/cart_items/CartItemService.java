@@ -1,6 +1,6 @@
 package com.fsd.phase2.healthcaremanagementsystem.carts.cart_items;
 
-import com.fsd.phase2.healthcaremanagementsystem.exceptions.EntityNotFoundException;
+import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

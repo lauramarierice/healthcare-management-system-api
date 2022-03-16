@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class OrderDTO {
 
     private Long orderId;
 
-    private ZonedDateTime orderDate;
+    private LocalDate orderDate;
 
     private Long userId;
 

@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,6 +20,12 @@ public class OrderController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<OrderDTO> getOrderReports() {
         return orderService.getOrderReports();
+    }
+
+    @GetMapping(value = "/reports/orders", params = {"filterby", "value"})
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<OrderDTO> getOrderReportsAndFilterByDate(@RequestParam("filterby") String filterBy, @RequestParam("value") Integer value) {
+        return orderService.getOrderReportsAndFilterByDate(filterBy, value);
     }
 
     @GetMapping(value = "/orders/{id}/statuses")

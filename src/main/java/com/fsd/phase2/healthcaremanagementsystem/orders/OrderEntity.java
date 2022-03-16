@@ -14,7 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "ORDERS")
@@ -38,5 +38,5 @@ public class OrderEntity {
     private String orderStatus;
 
     @Column(name = "ORDER_DATE")
-    private ZonedDateTime orderDate;
+    private LocalDate orderDate;
 }
