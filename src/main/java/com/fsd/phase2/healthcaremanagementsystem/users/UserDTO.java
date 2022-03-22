@@ -23,7 +23,7 @@ public class UserDTO {
 
     private Long userName;
 
-    private String role;
+    private String authority;
 
     private String firstName;
 

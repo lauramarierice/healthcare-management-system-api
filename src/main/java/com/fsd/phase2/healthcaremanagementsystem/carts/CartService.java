@@ -24,15 +24,7 @@ public class CartService {
                     throw new EntityNotFoundException("Cart not found.");
                 }));
 
-        List<CartItemDTO> cartItems = cartItemService.findCartItemsByCartId(cartDTO.getCartId());
-        cartDTO.setCartItems(cartItems);
-
-        Double totalCost = 0.0;
-        for(CartItemDTO cartItem :cartItems) {
-            totalCost += (cartItem.getPrice() * cartItem.getQuantity());
-        }
-
-        cartDTO.setCartCost(totalCost);
+        addCartItems(cartDTO);
 
         return cartDTO;
     }
@@ -43,6 +35,20 @@ public class CartService {
                     throw new EntityNotFoundException("Cart not found.");
                 }));
 
+        addCartItems(cartDTO);
+
+        return cartDTO;
+    }
+
+    public CartDTO createNewCart(CartDTO cartDTO) {
+        return cartMapper.map(cartRepository.save(cartMapper.map(cartDTO)));
+    }
+
+    public void deleteCartByUserId(Long patientId) {
+        cartRepository.deleteByUserId(patientId);
+    }
+
+    private void addCartItems(CartDTO cartDTO) {
         List<CartItemDTO> cartItems = cartItemService.findCartItemsByCartId(cartDTO.getCartId());
         cartDTO.setCartItems(cartItems);
 
@@ -52,15 +58,5 @@ public class CartService {
         }
 
         cartDTO.setCartCost(totalCost);
-
-        return cartDTO;
-    }
-
-    public CartDTO createNewCart(CartEntity cartEntity) {
-        return cartMapper.map(cartRepository.save(cartEntity));
-    }
-
-    public void deleteCartByUserId(Long patientId) {
-        cartRepository.deleteByUserId(patientId);
     }
 }

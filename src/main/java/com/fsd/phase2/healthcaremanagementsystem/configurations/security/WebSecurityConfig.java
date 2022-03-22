@@ -50,6 +50,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**", "/reports/**")
                 .hasAuthority("ADMIN")
                 .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                .and()
                 .csrf().disable();
     }
 }

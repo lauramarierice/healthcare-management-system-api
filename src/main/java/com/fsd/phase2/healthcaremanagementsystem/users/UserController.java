@@ -26,12 +26,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/users/register")
-    public UserDTO registerNewUser(@RequestBody UserEntity userEntity) {
-        return userService.registerNewUser(userEntity);
+    public UserDTO registerNewUser(@RequestBody UserDTO userDTO) {
+        return userService.registerNewUser(userDTO);
     }
 
     @PutMapping(value = "/users/{id}")
-    public UserDTO modifyUserInfo(@RequestBody UserEntity userEntity, Long id) {
-        return userService.modifyUserInfo(userEntity, id);
+    public UserDTO modifyUserInfo(@RequestBody UserDTO userDTO, Long id) {
+        return userService.modifyUserInfo(userDTO, id);
     }
 }

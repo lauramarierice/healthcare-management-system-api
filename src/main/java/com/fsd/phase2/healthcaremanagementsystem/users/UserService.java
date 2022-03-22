@@ -19,20 +19,20 @@ public class UserService {
                 }));
     }
 
-    public UserDTO registerNewUser(UserEntity userEntity) {
-        return userMapper.map(userRepository.save(userEntity));
+    public UserDTO registerNewUser(UserDTO userDTO) {
+        return userMapper.map(userRepository.save(userMapper.map(userDTO)));
     }
 
-    public UserDTO modifyUserInfo(UserEntity userEntity, Long id) {
+    public UserDTO modifyUserInfo(UserDTO userDTO, Long id) {
         return userRepository.findById(id)
                 .map(patient -> {
-                    patient.setEmail(userEntity.getEmail());
-                    patient.setPassword(userEntity.getPassword());
-                    patient.setPhoneNumber(userEntity.getPhoneNumber());
-                    patient.setAddress(userEntity.getAddress());
-                    return userMapper.map(userRepository.save(userEntity));
+                    patient.setEmail(userDTO.getEmail());
+                    patient.setPassword(userDTO.getPassword());
+                    patient.setPhoneNumber(userDTO.getPhoneNumber());
+                    patient.setAddress(userDTO.getAddress());
+                    return userMapper.map(userRepository.save(userMapper.map(userDTO)));
                 })
-                .orElse(userMapper.map(userEntity));
+                .orElse(userDTO);
     }
 
     public UserDTO loginUser(Long userId, String password) {

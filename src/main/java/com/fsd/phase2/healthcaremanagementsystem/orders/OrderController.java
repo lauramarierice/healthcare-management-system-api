@@ -38,9 +38,9 @@ public class OrderController {
         return orderService.findOrdersByUserId(userId);
     }
 
-    @PostMapping(value = "/users/{id}/orders")
-    public OrderDTO placeNewOrder(@PathVariable("id") Long patientId) {
-        return orderService.placeNewOrder(patientId);
+    @PostMapping(value = "/users/{id}/orders", params = "accountid")
+    public OrderDTO placeNewOrder(@PathVariable("id") Long userId, @RequestParam("accountid") Long accountId) {
+        return orderService.placeNewOrder(userId, accountId);
     }
 
 }

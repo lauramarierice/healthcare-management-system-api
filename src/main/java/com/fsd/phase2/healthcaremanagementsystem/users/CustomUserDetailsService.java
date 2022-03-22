@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 });
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(userEntity.getRole()));
+        grantedAuthorities.add(new SimpleGrantedAuthority(userEntity.getAuthority()));
 
         return new User(userEntity.getFirstName(), new BCryptPasswordEncoder().encode(userEntity.getPassword()), grantedAuthorities);
     }

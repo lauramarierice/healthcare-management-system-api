@@ -6,10 +6,12 @@ import com.fsd.phase2.healthcaremanagementsystem.carts.cart_items.CartItemDTO;
 import com.fsd.phase2.healthcaremanagementsystem.commons.FilterByTypeEnum;
 import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.BadRequestException;
 import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.EntityNotFoundException;
+import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.InsufficientFundsException;
 import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemDTO;
 import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemEntity;
 import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemService;
 import com.fsd.phase2.healthcaremanagementsystem.orders.order_items.OrderItemsRepository;
+import com.fsd.phase2.healthcaremanagementsystem.users.accounts.UserAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,8 @@ public class OrderService {
     private final OrderItemService orderItemService;
 
     private final OrderItemsRepository orderItemsRepository;
+
+    private final UserAccountService userAccountService;
 
     public List<OrderDTO> getOrderReports() {
         return orderMapper.mapProjectionList(orderRepository.findAllOrders());
@@ -76,14 +80,21 @@ public class OrderService {
         return orderMapper.mapList(orderRepository.findByUserId(userId));
     }
 
-    public OrderDTO placeNewOrder(Long userId) {
+    public OrderDTO placeNewOrder(Long userId, Long accountId) {
 
         CartDTO cartDTO = cartService.getCartByUserId(userId);
         List<CartItemDTO> cartItems = cartDTO.getCartItems();
 
+        //check balance
+        Double userBalance = userAccountService.getUserBalanceByUserId(userId, accountId);
+
+        if(userBalance < cartDTO.getCartCost()) {
+            throw new InsufficientFundsException();
+        }
+
         OrderEntity newOrderEntity = new OrderEntity();
         newOrderEntity.setUserId(userId);
-        newOrderEntity.setOrderDate(LocalDate.from(Instant.now()));
+        newOrderEntity.setOrderDate(LocalDate.now());
         orderRepository.save(newOrderEntity);
 
         cartItems.forEach(cartItemDTO -> {

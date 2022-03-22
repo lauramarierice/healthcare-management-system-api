@@ -36,9 +36,9 @@ public class UserEntity {
     @NotNull
     private String userName;
 
-    @Column(name = "ROLE")
+    @Column(name = "AUTHORITY")
     @NotNull
-    private String role;
+    private String authority;
 
     @Column(name = "FIRST_NAME")
     @NotNull

@@ -15,8 +15,8 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping(value = "/carts")
-    public CartDTO addToUserCart(@RequestBody CartEntity cartEntity) {
-        return cartService.createNewCart(cartEntity);
+    public CartDTO addToUserCart(@RequestBody CartDTO cartDTO) {
+        return cartService.createNewCart(cartDTO);
     }
 
     @GetMapping(value = "/carts/{id}")
