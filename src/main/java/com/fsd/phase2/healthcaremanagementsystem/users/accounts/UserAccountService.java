@@ -24,13 +24,13 @@ public class UserAccountService {
                     userAccountRepository.save(userAccount);
                     return userAccount;
                 })
-                .orElseThrow(EntityNotFoundException::new));
+                .orElseThrow(() -> new EntityNotFoundException("Account not found for the user, please try again.")));
 
     }
 
     public Double getUserBalanceByUserId(Long userId, Long accountNumber) {
         UserAccountDTO userAccountDTO = userAccountMapper.map(userAccountRepository.findByUserIdAndAccountNumber(userId, accountNumber)
-                .orElseThrow(EntityNotFoundException::new));
+                .orElseThrow(() -> new EntityNotFoundException("User account details not found")));
         return userAccountDTO.getBalance();
     }
 }

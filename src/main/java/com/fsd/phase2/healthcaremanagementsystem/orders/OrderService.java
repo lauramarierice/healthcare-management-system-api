@@ -15,7 +15,6 @@ import com.fsd.phase2.healthcaremanagementsystem.users.accounts.UserAccountServi
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -68,7 +67,7 @@ public class OrderService {
 
     public OrderDTO getOrderStatusByOrderId(Long orderId) {
         OrderDTO orderDTO = orderMapper.map(orderRepository.findById(orderId)
-                .orElseThrow(EntityNotFoundException::new));
+                .orElseThrow(() -> new EntityNotFoundException("Order details not found")));
 
         List<OrderItemDTO> orderItems = orderItemService.findOrderItemsByOrderId(orderId);
         orderDTO.setOrderItems(orderItems);
@@ -88,8 +87,8 @@ public class OrderService {
         //check balance
         Double userBalance = userAccountService.getUserBalanceByUserId(userId, accountId);
 
-        if(userBalance < cartDTO.getCartCost()) {
-            throw new InsufficientFundsException();
+        if (userBalance < cartDTO.getCartCost()) {
+            throw new InsufficientFundsException("Not enough funds to place order!");
         }
 
         OrderEntity newOrderEntity = new OrderEntity();

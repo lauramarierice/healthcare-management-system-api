@@ -1,5 +1,6 @@
 package com.fsd.phase2.healthcaremanagementsystem.users;
 
+import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.EntityNotFoundException;
 import com.fsd.phase2.healthcaremanagementsystem.users.roles.RoleEntity;
 import com.fsd.phase2.healthcaremanagementsystem.users.roles.RoleService;
 import lombok.AllArgsConstructor;
@@ -22,14 +23,9 @@ public class UserService {
 
     private final RoleService roleService;
 
-    public ResponseEntity<?> getUserInformationByUserId(Long id) {
-        UserDTO userDTO = userMapper.map(userRepository.findById(id).orElse(null));
-
-        if (userDTO == null) {
-            return new ResponseEntity<>("User not found!", HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    public UserDTO getUserInformationByUserId(Long id) {
+        return userMapper.map(userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found!")));
     }
 
     public ResponseEntity<String> registerNewUser(UserDTO userDTO) {
@@ -51,6 +47,8 @@ public class UserService {
         newUser.setUserName(userDTO.getUserName());
         newUser.setEmail(userDTO.getEmail());
         newUser.setBirthDate(userDTO.getBirthDate());
+        newUser.setAddress(userDTO.getAddress());
+        newUser.setPhoneNumber(userDTO.getPhoneNumber());
         newUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         RoleEntity roles = roleService.findRolesByName("ROLE_USER");

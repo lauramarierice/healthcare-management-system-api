@@ -1,7 +1,6 @@
 package com.fsd.phase2.healthcaremanagementsystem.medicine;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +42,7 @@ public class MedicineController {
 
     @PutMapping(value = "/admin/medicine/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> updateMedicine(@RequestBody MedicineDTO medicineDTO, @PathVariable("id") Long id) {
+    public MedicineDTO updateMedicine(@RequestBody MedicineDTO medicineDTO, @PathVariable("id") Long id) {
         return medicineService.updateMedicine(medicineDTO, id);
     }
 

@@ -21,12 +21,12 @@ public class CartItemService {
 
     public CartItemDTO getCartItemByCartIdAndMedicineId(Long cartId, Long medicineId) {
         return cartItemMapper.map(cartItemRepository.findByCartIdAndMedicineId(cartId, medicineId)
-                .orElseThrow(EntityNotFoundException::new));
+                .orElseThrow(() -> new EntityNotFoundException("Cart item not found")));
     }
 
     public CartItemDTO updateCartItem(Long cartId, Long medicineId, Integer quantity) {
         CartItemEntity cartItemEntity = cartItemRepository.findByCartIdAndMedicineId(cartId, medicineId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("Cart not found"));
 
         cartItemEntity.setQuantity(quantity);
         cartItemRepository.save(cartItemEntity);
