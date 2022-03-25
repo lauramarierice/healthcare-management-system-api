@@ -21,7 +21,7 @@ public class UserDTO {
 
     private Long userId;
 
-    private Long userName;
+    private String userName;
 
     private String authority;
 

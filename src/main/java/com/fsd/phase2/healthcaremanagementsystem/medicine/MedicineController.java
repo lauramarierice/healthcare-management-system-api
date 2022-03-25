@@ -1,6 +1,7 @@
 package com.fsd.phase2.healthcaremanagementsystem.medicine;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,19 +36,19 @@ public class MedicineController {
     }
 
     @PostMapping(value = "/admin/medicine")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public MedicineDTO addMedicine(@RequestBody MedicineDTO medicineDTO) {
         return medicineService.addMedicine(medicineDTO);
     }
 
     @PutMapping(value = "/admin/medicine/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public MedicineDTO updateMedicine(@RequestBody MedicineDTO medicineDTO, @PathVariable("id") Long id) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> updateMedicine(@RequestBody MedicineDTO medicineDTO, @PathVariable("id") Long id) {
         return medicineService.updateMedicine(medicineDTO, id);
     }
 
     @DeleteMapping(value = "/admin/medicine/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteMedicine(@PathVariable("id") Long id) {
         medicineService.deleteMedicine(id);
     }

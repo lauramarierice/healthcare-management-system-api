@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -24,9 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                     throw new UsernameNotFoundException("user name not found");
                 });
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(userEntity.getAuthority()));
+        List<GrantedAuthority> authorities = userEntity.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                .collect(Collectors.toList());
 
-        return new User(userEntity.getFirstName(), new BCryptPasswordEncoder().encode(userEntity.getPassword()), grantedAuthorities);
+        return new User(userEntity.getFirstName(), new BCryptPasswordEncoder().encode(userEntity.getPassword()), authorities);
     }
+
 }

@@ -17,13 +17,13 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping(value = "/reports/orders")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<OrderDTO> getOrderReports() {
         return orderService.getOrderReports();
     }
 
     @GetMapping(value = "/reports/orders", params = {"filterby", "value"})
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<OrderDTO> getOrderReportsAndFilterByDate(@RequestParam("filterby") String filterBy, @RequestParam("value") Integer value) {
         return orderService.getOrderReportsAndFilterByDate(filterBy, value);
     }

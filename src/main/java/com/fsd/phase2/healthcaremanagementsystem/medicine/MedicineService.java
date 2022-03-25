@@ -2,6 +2,8 @@ package com.fsd.phase2.healthcaremanagementsystem.medicine;
 
 import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -35,15 +37,20 @@ public class MedicineService {
         return medicineMapper.map(medicineRepository.save(medicineMapper.map(medicineDTO)));
     }
 
-    public MedicineDTO updateMedicine(@RequestBody MedicineDTO medicineDTO, Long id) {
-        return medicineRepository.findById(id)
+    public ResponseEntity<?> updateMedicine(@RequestBody MedicineDTO medicineDTO, Long id) {
+        MedicineDTO medicineToUpdate = medicineRepository.findById(id)
                 .map(medicine -> {
                     medicine.setBrand(medicineDTO.getBrand());
                     medicine.setPrice(medicineDTO.getPrice());
                     medicine.setQuantity(medicineDTO.getQuantityAvailable());
                     return medicineMapper.map(medicineRepository.save(medicineMapper.map(medicineDTO)));
-                })
-                .orElseThrow(EntityNotFoundException::new);
+                }).orElse(null);
+
+        if(medicineToUpdate == null) {
+            return new ResponseEntity<>("Medicine not found", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(medicineToUpdate, HttpStatus.OK);
     }
 
     @Transactional
