@@ -91,6 +91,8 @@ public class OrderService {
             throw new InsufficientFundsException("Not enough funds to place order!");
         }
 
+        userAccountService.updateUserBalance(userId, accountId, cartDTO.getCartCost());
+
         OrderEntity newOrderEntity = new OrderEntity();
         newOrderEntity.setUserId(userId);
         newOrderEntity.setOrderDate(LocalDate.now());
@@ -105,6 +107,12 @@ public class OrderService {
             orderItemsRepository.save(orderItemEntity);
         });
 
-        return orderMapper.map(newOrderEntity);
+        OrderDTO newlyPlaceOrderDetails = orderMapper.map(orderRepository.findById(newOrderEntity.getOrderId())
+                .orElseThrow(() -> new EntityNotFoundException("Error in creating the order, please resubmit your order")));
+
+        List<OrderItemDTO> orderItems = orderItemService.findOrderItemsByOrderId(newOrderEntity.getOrderId());
+        newlyPlaceOrderDetails.setOrderItems(orderItems);
+
+        return newlyPlaceOrderDetails;
     }
 }
