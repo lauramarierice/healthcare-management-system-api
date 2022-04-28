@@ -60,6 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**", "/reports/**")
                 .hasRole("ADMIN")
                 .and()
+                .cors().and()
                 .csrf().disable();
     }
 }

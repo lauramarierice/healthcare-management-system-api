@@ -5,8 +5,11 @@ import com.fsd.phase2.healthcaremanagementsystem.carts.cart_items.CartItemServic
 import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -44,8 +47,19 @@ public class CartService {
         return cartMapper.map(cartRepository.save(cartMapper.map(cartDTO)));
     }
 
+    public CartDTO createNewCartByUserId(Long userId) {
+        CartEntity cartEntity = new CartEntity();
+        cartEntity.setUserId(userId);
+        return cartMapper.map(cartRepository.save(cartEntity));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void deleteCartByUserId(Long patientId) {
         cartRepository.deleteByUserId(patientId);
+    }
+
+    public void deleteCartByCartId(Long cartId) {
+        cartRepository.deleteByCartId(cartId);
     }
 
     private void addCartItems(CartDTO cartDTO) {
@@ -53,10 +67,32 @@ public class CartService {
         cartDTO.setCartItems(cartItems);
 
         Double totalCost = 0.0;
-        for(CartItemDTO cartItem :cartItems) {
+        for (CartItemDTO cartItem : cartItems) {
             totalCost += (cartItem.getPrice() * cartItem.getQuantity());
         }
 
         cartDTO.setCartCost(totalCost);
+    }
+
+    public CartDTO updateCartItemByUserId(Long userId, Long medicineId, Integer quantity) {
+
+        CartDTO cartDTO = cartMapper.map(cartRepository.getByUserId(userId).orElse(null));
+
+        if(Objects.isNull(cartDTO)) {
+            this.createNewCartByUserId(userId);
+        } else {
+            cartItemService.updateCartItemByUserId(userId, medicineId, quantity);
+        }
+        return this.getCartByUserId(userId);
+    }
+
+    public CartDTO increaseCartItemQuantityByUserId(Long userId, Long medicineId) {
+        cartItemService.increaseCartItemQuantityByUserId(userId, medicineId);
+        return this.getCartByUserId(userId);
+    }
+
+    public CartDTO decreaseCartItemQuantityByUserId(Long userId, Long medicineId) {
+        cartItemService.decreaseCartItemQuantityByUserId(userId, medicineId);
+        return this.getCartByUserId(userId);
     }
 }

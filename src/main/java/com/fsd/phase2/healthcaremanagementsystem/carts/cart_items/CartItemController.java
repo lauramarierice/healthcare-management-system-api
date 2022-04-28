@@ -1,10 +1,10 @@
 package com.fsd.phase2.healthcaremanagementsystem.carts.cart_items;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,13 +26,10 @@ public class CartItemController {
         return cartItemService.getCartItemByCartIdAndMedicineId(cartId, medicineId);
     }
 
-    @PutMapping(value = "/carts/{cartid}/items", params = {"medicineid", "quantity"})
-    public CartItemDTO updateCartItem(@PathVariable("cartid") Long cartId, @RequestParam("medicineid") Long medicineId, @RequestParam("quantity") Integer quantity) {
-       return cartItemService.updateCartItem(cartId, medicineId, quantity);
+    @CrossOrigin(origins = {"http://localhost:3000/cart", "http://localhost:3000/products", "http://localhost:3000"})
+    @DeleteMapping(value = "/users/{id}/cart-items", params = {"medicineid"})
+    public void deleteMedicineFromCart(@PathVariable("id") Long userId, @RequestParam("medicineid") Long medicineId) {
+        cartItemService.deleteCartItemByUserIdAndMedicineId(userId, medicineId);
     }
 
-    @DeleteMapping(value = "/carts/{id}/items", params = {"medicineid"})
-    public void deleteMedicineFromCart(@PathVariable("id") Long cartId, @RequestParam("medicineid") Long medicineId) {
-        cartItemService.deleteCartItemByCartIdAndMedicineId(cartId, medicineId);
-    }
 }

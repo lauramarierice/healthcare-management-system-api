@@ -37,6 +37,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long userId;
 
     @Column(name = "USERNAME")
@@ -70,11 +71,13 @@ public class UserEntity {
     private String phoneNumber;
 
     @Column(name = "EMAIL")
+    @NotNull
     private String email;
 
     @Column(name = "ADDRESS")
     private String address;
 
     @Column(name = "PASSWORD")
+    @NotNull
     private String password;
 }

@@ -3,7 +3,6 @@ package com.fsd.phase2.healthcaremanagementsystem.medicine;
 import com.fsd.phase2.healthcaremanagementsystem.commons.exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -16,6 +15,9 @@ public class MedicineService {
 
     private final MedicineMapper medicineMapper;
 
+    public List<MedicineDTO> findAllMedicineProducts() {
+        return medicineMapper.map(medicineRepository.findAll());
+    }
     public MedicineDTO getMedicineByMedicineId(Long medicineId) {
         return medicineMapper.map(medicineRepository.findById(medicineId)
                 .orElseThrow(() -> {
@@ -31,11 +33,20 @@ public class MedicineService {
         return medicineMapper.map(medicineRepository.findByTreatableDiseases(treatableDisease));
     }
 
-    public MedicineDTO addMedicine(@RequestBody MedicineDTO medicineDTO) {
-        return medicineMapper.map(medicineRepository.save(medicineMapper.map(medicineDTO)));
+    public MedicineDTO addMedicine(MedicineDTO medicineDTO) {
+        MedicineEntity medicineEntity = new MedicineEntity();
+        medicineEntity.setMedicineName(medicineDTO.getName());
+        medicineEntity.setDescription(medicineDTO.getDescription());
+        medicineEntity.setPrice(medicineDTO.getPrice());
+        medicineEntity.setDiscountedPrice(medicineDTO.getDiscountedPrice());
+        medicineEntity.setTreatableDiseases(medicineDTO.getTreatableDiseases());
+        medicineEntity.setDescription(medicineDTO.getDescription());
+        medicineEntity.setQuantity(medicineDTO.getQuantityAvailable());
+        medicineEntity.setExpirationDate(medicineDTO.getExpirationDate());
+        return medicineMapper.map(medicineRepository.save(medicineEntity));
     }
 
-    public MedicineDTO updateMedicine(@RequestBody MedicineDTO medicineDTO, Long id) {
+    public MedicineDTO updateMedicine(MedicineDTO medicineDTO, Long id) {
         return medicineRepository.findById(id)
                 .map(medicine -> {
                     medicine.setBrand(medicineDTO.getBrand());

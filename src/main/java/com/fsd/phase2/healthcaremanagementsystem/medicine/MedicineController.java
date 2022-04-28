@@ -2,6 +2,7 @@ package com.fsd.phase2.healthcaremanagementsystem.medicine;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +20,16 @@ public class MedicineController {
 
     private final MedicineService medicineService;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "/medicine/{id}")
     public MedicineDTO getMedicineByMedicineId(@PathVariable("id") Long medicineId) {
         return medicineService.getMedicineByMedicineId(medicineId);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value = "/medicine/all")
+    public List<MedicineDTO> findAllMedicineProducts() {
+        return medicineService.findAllMedicineProducts();
     }
 
     @GetMapping(value = "/medicine", params = {"description"})
@@ -34,8 +42,8 @@ public class MedicineController {
         return medicineService.findMedicineByDisease(disease);
     }
 
-    @PostMapping(value = "/admin/medicine")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping(value = "/add/medicine")
+    @CrossOrigin(origins = {"http://localhost:3000/admin/add-medicine","http://localhost:3000"})
     public MedicineDTO addMedicine(@RequestBody MedicineDTO medicineDTO) {
         return medicineService.addMedicine(medicineDTO);
     }

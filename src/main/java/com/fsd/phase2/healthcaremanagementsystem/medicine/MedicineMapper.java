@@ -18,6 +18,14 @@ public interface MedicineMapper {
     @Mapping(target = "discountedPrice", source = "discountedPrice")
     MedicineDTO map(MedicineEntity source);
 
+    @Mapping(target = "medicineId", source = "medicineId")
+    @Mapping(target = "medicineName", source = "name")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "treatableDiseases", source = "treatableDiseases")
+    @Mapping(target = "price", source = "price")
+    @Mapping(target = "quantity", source = "quantityAvailable")
+    @Mapping(target = "expirationDate", source = "expirationDate")
+    @Mapping(target = "discountedPrice", source = "discountedPrice")
     MedicineEntity map(MedicineDTO source);
 
     List<MedicineDTO> map(List<MedicineEntity> source);

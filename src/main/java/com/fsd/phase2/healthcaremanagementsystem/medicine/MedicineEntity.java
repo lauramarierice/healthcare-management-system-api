@@ -30,6 +30,7 @@ public class MedicineEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long medicineId;
 
     @Column(name = "MEDICINE_NAME")

@@ -23,6 +23,17 @@ public class UserService {
 
     private final RoleService roleService;
 
+    public ResponseEntity<?> login(String userName, String password) {
+        UserDTO userDTO = userMapper.map(userRepository.findByUserNameAndPassword(userName, password)
+                .orElse(null));
+
+        if(userDTO == null) {
+           return new ResponseEntity<String>("Username or Password is incorrect!", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+
     public UserDTO getUserInformationByUserId(Long id) {
         return userMapper.map(userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found!")));
