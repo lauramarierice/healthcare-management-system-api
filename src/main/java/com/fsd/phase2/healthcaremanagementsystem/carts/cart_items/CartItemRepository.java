@@ -16,6 +16,7 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> 
             "       ci.medicineId as medicineId," +
             "       ci.quantity as quantity," +
             "       m.medicineName as medicineName," +
+            "       c.userId as userId," +
             "       m.price as price" +
             " from CartItemEntity ci" +
             " inner join CartEntity c on c.cartId = ci.cartId" +
@@ -49,9 +50,8 @@ public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     void deleteByCartIdAndMedicineId(Long cartId, Long medicineId);
 
-    @Query(value = "select ci.cartId as cartId" +
-            " from CartItemEntity ci" +
-            " inner join CartEntity c on c.cartId = ci.cartId" +
+    @Query(value = "select c.cartId" +
+            " from CartEntity c" +
             " where c.userId = :userId and rownum <= 1")
     Optional<Long> findCartIdByUserId(Long userId);
 }

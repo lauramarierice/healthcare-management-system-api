@@ -1,6 +1,11 @@
 package com.fsd.phase2.healthcaremanagementsystem.medicine;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -29,4 +34,6 @@ public class MedicineDTO {
     private LocalDateTime expirationDate;
 
     private Double discountedPrice;
+
+    private String imageUrl;
 }

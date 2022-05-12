@@ -47,10 +47,14 @@ public class CartService {
         return cartMapper.map(cartRepository.save(cartMapper.map(cartDTO)));
     }
 
-    public CartDTO createNewCartByUserId(Long userId) {
+    public CartDTO createNewCartByUserId(Long userId, Long medicineId,Integer quantity) {
         CartEntity cartEntity = new CartEntity();
         cartEntity.setUserId(userId);
-        return cartMapper.map(cartRepository.save(cartEntity));
+        cartRepository.save(cartEntity);
+
+        cartItemService.updateCartItemByUserId(userId, medicineId, quantity);
+
+        return this.getCartByUserId(userId);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -79,7 +83,7 @@ public class CartService {
         CartDTO cartDTO = cartMapper.map(cartRepository.getByUserId(userId).orElse(null));
 
         if(Objects.isNull(cartDTO)) {
-            this.createNewCartByUserId(userId);
+            this.createNewCartByUserId(userId, medicineId, quantity);
         } else {
             cartItemService.updateCartItemByUserId(userId, medicineId, quantity);
         }

@@ -56,10 +56,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers("/admin/**", "/reports/**")
-                .hasRole("ADMIN")
-                .and()
+                //.authorizeRequests()
+               // .antMatchers("/admin/**", "/reports/**")
+               // .hasRole("ADMIN")
+                //.and()
                 .cors().and()
                 .csrf().disable();
     }

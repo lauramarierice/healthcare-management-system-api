@@ -70,14 +70,15 @@ public class UserService {
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
-    public UserDTO modifyUserInfo(UserDTO userDTO, Long id) {
-        return userRepository.findById(id)
+    public UserDTO modifyUserInfo(UserDTO userDTO, Long userId) {
+        return userRepository.findByUserId(userId)
                 .map(patient -> {
                     patient.setEmail(userDTO.getEmail());
                     patient.setPassword(userDTO.getPassword());
                     patient.setPhoneNumber(userDTO.getPhoneNumber());
                     patient.setAddress(userDTO.getAddress());
-                    return userMapper.map(userRepository.save(userMapper.map(userDTO)));
+                    userRepository.save(patient);
+                    return userMapper.map(patient);
                 })
                 .orElse(userDTO);
     }

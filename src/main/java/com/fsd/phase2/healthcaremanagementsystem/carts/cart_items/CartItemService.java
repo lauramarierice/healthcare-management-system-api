@@ -41,13 +41,13 @@ public class CartItemService {
                 .orElse(null));
 
         if (Objects.isNull(cartItem)) {
-            CartItemDTO newCartItem = new CartItemDTO();
+            CartItemEntity newCartItem = new CartItemEntity();
             Long cartId = cartItemRepository.findCartIdByUserId(userId).orElse(null);
 
             newCartItem.setMedicineId(medicineId);
             newCartItem.setQuantity(quantity);
             newCartItem.setCartId(cartId);
-            cartItemRepository.save(cartItemMapper.map(newCartItem));
+            cartItemRepository.save(newCartItem);
         } else {
             Integer newQuantity = cartItem.getQuantity() + 1;
             cartItem.setQuantity(newQuantity);

@@ -57,4 +57,7 @@ public class MedicineEntity {
 
     @Column(name = "DISCOUNTED_PRICE")
     private Double discountedPrice;
+
+    @Column(name = "IMAGE_URL")
+    private String imageUrl;
 }

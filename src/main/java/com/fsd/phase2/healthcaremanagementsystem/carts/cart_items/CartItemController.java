@@ -1,7 +1,6 @@
 package com.fsd.phase2.healthcaremanagementsystem.carts.cart_items;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +25,6 @@ public class CartItemController {
         return cartItemService.getCartItemByCartIdAndMedicineId(cartId, medicineId);
     }
 
-    @CrossOrigin(origins = {"http://localhost:3000/cart", "http://localhost:3000/products", "http://localhost:3000"})
     @DeleteMapping(value = "/users/{id}/cart-items", params = {"medicineid"})
     public void deleteMedicineFromCart(@PathVariable("id") Long userId, @RequestParam("medicineid") Long medicineId) {
         cartItemService.deleteCartItemByUserIdAndMedicineId(userId, medicineId);

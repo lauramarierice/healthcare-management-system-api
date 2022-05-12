@@ -1,7 +1,6 @@
 package com.fsd.phase2.healthcaremanagementsystem.orders;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,13 +16,11 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping(value = "/reports/orders")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<OrderDTO> getOrderReports() {
         return orderService.getOrderReports();
     }
 
-    @GetMapping(value = "/reports/orders", params = {"filterby", "value"})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/reports/filtered-orders", params = {"filterby", "value"})
     public List<OrderDTO> getOrderReportsAndFilterByDate(@RequestParam("filterby") String filterBy, @RequestParam("value") Integer value) {
         return orderService.getOrderReportsAndFilterByDate(filterBy, value);
     }
@@ -38,7 +35,7 @@ public class OrderController {
         return orderService.findOrdersByUserId(userId);
     }
 
-    @PostMapping(value = "/users/{id}/orders", params = "accountid")
+    @PostMapping(value = "/users/{id}/orders", params = {"accountid"})
     public OrderDTO placeNewOrder(@PathVariable("id") Long userId, @RequestParam("accountid") Long accountId) {
         return orderService.placeNewOrder(userId, accountId);
     }

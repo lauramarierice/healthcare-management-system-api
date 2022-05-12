@@ -13,6 +13,9 @@ public class UserAccountService {
 
     private final UserAccountMapper userAccountMapper;
 
+    public UserAccountDTO getUserAccountDetails(Long userId) {
+        return userAccountMapper.map(userAccountRepository.findByUserId(userId).stream().findFirst().get());
+    }
     public UserAccountDTO addFundsToAccountNumber(Long userId, Long accountNumber, Double funds) {
 
         return userAccountMapper.map(userAccountRepository.findByUserIdAndAccountNumber(userId, accountNumber)
