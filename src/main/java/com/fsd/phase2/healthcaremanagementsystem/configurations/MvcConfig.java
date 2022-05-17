@@ -13,7 +13,7 @@ public class MvcConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:3000");
+                registry.addMapping("/**").allowedOrigins("http://localhost:3000", "http://localhost:3000/product", "http://localhost:3000/cart/checkout", "http://localhost:3000/cart");
             }
         };
     }

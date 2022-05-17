@@ -39,7 +39,7 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found!")));
     }
 
-    public ResponseEntity<String> registerNewUser(UserDTO userDTO) {
+    public ResponseEntity<?> registerNewUser(UserDTO userDTO) {
 
         // add check for username exists in a DB
         UserEntity userName = userRepository.findByUserName(userDTO.getUserName()).orElse(null);
@@ -67,7 +67,9 @@ public class UserService {
 
         userRepository.save(newUser);
 
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        UserDTO newlyRegisteredUser = userMapper.map(userRepository.findByUserId(newUser.getUserId()).orElse(null));
+
+        return new ResponseEntity<UserDTO>(newlyRegisteredUser, HttpStatus.OK);
     }
 
     public UserDTO modifyUserInfo(UserDTO userDTO, Long userId) {

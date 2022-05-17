@@ -1,6 +1,7 @@
 package com.fsd.phase2.healthcaremanagementsystem.carts;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,16 +43,19 @@ public class CartController {
     }
 
     @PutMapping(value = "/users/{userid}/carts-items", params = {"medicineid", "quantity"})
+    @CrossOrigin(value = {"http://localhost:3000/product", "http://localhost:3000", "http://localhost:3000/cart"})
     public CartDTO updateCartItem(@PathVariable("userid") Long userId, @RequestParam("medicineid") Long medicineId, @RequestParam("quantity") Integer quantity) {
         return cartService.updateCartItemByUserId(userId, medicineId, quantity);
     }
 
     @PutMapping(value = "/users/{userid}/increase/carts-items", params = {"medicineid"})
+    @CrossOrigin(value = {"http://localhost:3000/product", "http://localhost:3000", "http://localhost:3000/cart"})
     public CartDTO increaseCartItemQuantity(@PathVariable("userid") Long userId, @RequestParam("medicineid") Long medicineId) {
         return cartService.increaseCartItemQuantityByUserId(userId, medicineId);
     }
 
     @PutMapping(value = "/users/{userid}/decrease/carts-items", params = {"medicineid"})
+    @CrossOrigin(value = {"http://localhost:3000/product", "http://localhost:3000", "http://localhost:3000/cart"})
     public CartDTO decreaseCartItemQuantity(@PathVariable("userid") Long userId, @RequestParam("medicineid") Long medicineId) {
         return cartService.decreaseCartItemQuantityByUserId(userId, medicineId);
     }
